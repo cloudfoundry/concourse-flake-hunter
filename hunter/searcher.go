@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
+	"github.com/cloudfoundry/concourse-flake-hunter/fly"
 	"github.com/concourse/concourse/atc"
 	"github.com/concourse/concourse/go-concourse/concourse"
-	"github.com/masters-of-cats/concourse-flake-hunter/fly"
 )
 
 const (
@@ -68,7 +68,7 @@ func (s *Searcher) getBuildsFromPage(flakesChan chan Build, page concourse.Page,
 }
 
 func (s *Searcher) fetchBuildsFromPage(buildsChan chan atc.Build, page concourse.Page, spec SearchSpec) {
-	var pages = concourse.Pagination{Next: &page}
+	pages := concourse.Pagination{Next: &page}
 	var builds []atc.Build
 	var err error
 
@@ -81,7 +81,7 @@ func (s *Searcher) fetchBuildsFromPage(buildsChan chan atc.Build, page concourse
 		}
 
 		for _, build := range builds {
-			if build.Status != string(atc.StatusFailed) {
+			if build.Status != atc.StatusFailed {
 				continue
 			}
 
